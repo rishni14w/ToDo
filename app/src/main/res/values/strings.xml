@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">ToDo</string>
+    <string name="newTaskTitle">New Task</string>
+    <string name="homeTitle">Home</string>
+
+    <!--Add Task-->
+    <string name="task">Task</string>
+    <string name="date">Date</string>
+    <string name="description">Description</string>
+    <string name="taskHint">Type your task here</string>
+    <string name="dateHint">Pick the date here</string>
+    <string name="descriptionHint">Type notes here</string>
 </resources>
