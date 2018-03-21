@@ -6,16 +6,26 @@
     android:layout_height="match_parent"
     tools:context="com.ctseproject.rishnisewmi.todo.MainActivity">
 
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="112dp" />
+
     <Button
-        android:id="@+id/homebtn"
+        android:id="@+id/add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="219dp"
-        android:onClick="OnClickHomebtn"
-        android:text="Click me To go to Home"
-        tools:layout_editor_absoluteX="130dp"
-        tools:layout_editor_absoluteY="244dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="31dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:onClick="onAddClicked"
+        android:text="ADD" />
 
 </RelativeLayout>
