@@ -3,6 +3,8 @@ package com.ctseproject.rishnisewmi.todo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -15,9 +17,10 @@ import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME="ToDoDb";
+    private static final String DB_NAME="ToDoDB";
     private static final String TABLE_NAME="Tasks";
-    private static final String COLUMN_NAME="Task";
+    private static final String COLUMN_ONE="Task";
+    private static final String COLUMN_TWO="Description";
     private static final int DB_VERSION=1;
 
     private SQLiteDatabase database;
@@ -29,7 +32,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query=String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL);",TABLE_NAME,COLUMN_NAME);
+        String query=String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT);",TABLE_NAME,COLUMN_ONE,COLUMN_TWO);
         db.execSQL(query);
     }
 
@@ -40,15 +43,16 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertNewTask(String item)
+    public boolean insertNewTask(String item,String desc)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put(COLUMN_NAME,item);
+        contentValues.put(COLUMN_ONE,item);
+        contentValues.put(COLUMN_TWO,desc);
 
         Log.d("dbhelper","add data"+item+"to"+TABLE_NAME);
 
-        long result=db.insert(TABLE_NAME,null,contentValues);
+        long result=db.insertWithOnConflict(TABLE_NAME,null,contentValues,db.CONFLICT_REPLACE);
 
         if(result==-1)
         {
@@ -64,14 +68,21 @@ public class DbHelper extends SQLiteOpenHelper {
     {
         ArrayList<String> todoList=new ArrayList<>();
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor c=db.query(TABLE_NAME,new String[]{COLUMN_NAME},null,null,null,null,null);
-        while (c.moveToNext())
+        Cursor c=db.query(TABLE_NAME,new String[]{COLUMN_ONE},null,null,null,null,null);
+        if(c.moveToLast())
         {
-            int index=c.getColumnIndex(COLUMN_NAME);
-            todoList.add(c.getString(index));
+            do{
+                int index=c.getColumnIndex(COLUMN_ONE);
+                todoList.add(c.getString(index));
+            }
+            while (c.moveToPrevious());
+
         }
         c.close();
         db.close();
         return todoList;
     }
+
+
+
 }

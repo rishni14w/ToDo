@@ -13,6 +13,7 @@ public class NewTaskActivity extends AppCompatActivity {
     DbHelper dbHelperr;
     //private Button btnAdd; //save button
     private EditText editText;
+    private EditText editText_desc;
     private MenuItem menuITEM;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class NewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_task);
 
         editText=findViewById(R.id.new_task_txt);
+        editText_desc=findViewById(R.id.new_descrip_txt);
         //btnAdd=findViewById(R.id.btn_save); //save btn
         dbHelperr=new DbHelper(this);
         menuITEM=findViewById(R.id.save);
@@ -33,9 +35,9 @@ public class NewTaskActivity extends AppCompatActivity {
         return true;
     }
 
-    public void AddData(String newEntry)
+    public void AddData(String newEntry,String newDesc)
     {
-        boolean insertData=dbHelperr.insertNewTask(newEntry);
+        boolean insertData=dbHelperr.insertNewTask(newEntry,newDesc);
         if (insertData)
         {
             toastMessage("success");
@@ -56,9 +58,10 @@ public class NewTaskActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String newEntry=editText.getText().toString();
+        String newDesc=editText_desc.getText().toString();
         if (editText.length()!=0)
         {
-            AddData(newEntry);
+            AddData(newEntry,newDesc);
         }
         else {
             toastMessage("error");
