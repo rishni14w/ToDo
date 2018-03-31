@@ -2,6 +2,7 @@ package com.ctseproject.rishnisewmi.todo;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Task> taskList;
     Task task;
 
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,16 +44,33 @@ public class MainActivity extends AppCompatActivity {
         else
         {
 
-            while (data.moveToNext())
+            if(data.moveToLast())
             {
-                task=new Task(data.getString(1),data.getString(3));
-                taskList.add(task);
+                do{
+                    task=new Task(data.getString(1),data.getString(3));
+                    taskList.add(task);
 
-                Task_ListAdapter adapter_task=new Task_ListAdapter(this,R.layout.row,taskList);
-                lstItems=(ListView)findViewById(R.id.list_view);
-                lstItems.setAdapter(adapter_task);
+                    Task_ListAdapter adapter_task=new Task_ListAdapter(this,R.layout.row,taskList);
+                    lstItems=(ListView)findViewById(R.id.list_view);
+                    lstItems.setAdapter(adapter_task);
+                }
+                while (data.moveToPrevious());
+
             }
         }
+
+        //fab
+        fab=(FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId()==R.id.fab)
+                {
+                    Intent i= new Intent(MainActivity.this,NewTaskActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
     }
 
     public  void itemClicked(View view)
@@ -68,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onAddClicked(View view)
+    /**public void onAddClicked(View view)
     {
         if(view.getId()==R.id.add_task)
         {
             Intent i=new Intent(this,NewTaskActivity.class);
             startActivity(i);
         }
-    }
+    }**/
 
 
     private void showItemList()
