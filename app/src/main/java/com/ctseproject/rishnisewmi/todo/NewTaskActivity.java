@@ -1,12 +1,19 @@
 package com.ctseproject.rishnisewmi.todo;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class NewTaskActivity extends AppCompatActivity {
 
@@ -14,7 +21,12 @@ public class NewTaskActivity extends AppCompatActivity {
     //private Button btnAdd; //save button
     private EditText editText;
     private EditText editText_desc;
+    private EditText editText_date;
     private MenuItem menuITEM;
+
+    Calendar myCalendar=Calendar.getInstance();
+    DatePickerDialog.OnDateSetListener date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +35,36 @@ public class NewTaskActivity extends AppCompatActivity {
 
         editText=findViewById(R.id.new_task_txt);
         editText_desc=findViewById(R.id.new_descrip_txt);
+        editText_date=findViewById(R.id.new_date_txt);
         //btnAdd=findViewById(R.id.btn_save); //save btn
         dbHelperr=new DbHelper(this);
         menuITEM=findViewById(R.id.save);
+
+        //datepicker
+        date=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR,year);
+                myCalendar.set(Calendar.MONTH,monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                updateLabel();
+            }
+        };
+
+        editText_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(NewTaskActivity.this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+    }
+
+    public void updateLabel()
+    {
+        String format="dd/MM/yyyy";
+        SimpleDateFormat sdf=new SimpleDateFormat(format, Locale.US);
+        editText_date.setText(sdf.format(myCalendar.getTime()));
     }
 
     @Override
@@ -35,9 +74,9 @@ public class NewTaskActivity extends AppCompatActivity {
         return true;
     }
 
-    public void AddData(String newEntry,String newDesc)
+    public void AddData(String newEntry,String newDesc,String date)
     {
-        boolean insertData=dbHelperr.insertNewTask(newEntry,newDesc);
+        boolean insertData=dbHelperr.insertNewTask(newEntry,newDesc,date);
         if (insertData)
         {
             toastMessage("success");
@@ -59,9 +98,10 @@ public class NewTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         String newEntry=editText.getText().toString();
         String newDesc=editText_desc.getText().toString();
+        String date=editText_date.getText().toString();
         if (editText.length()!=0)
         {
-            AddData(newEntry,newDesc);
+            AddData(newEntry,newDesc,date);
         }
         else {
             toastMessage("error");

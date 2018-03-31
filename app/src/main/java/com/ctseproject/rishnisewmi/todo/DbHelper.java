@@ -17,10 +17,11 @@ import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME="ToDoDB";
+    private static final String DB_NAME="ToDoDatabase";
     private static final String TABLE_NAME="Tasks";
     private static final String COLUMN_ONE="Task";
     private static final String COLUMN_TWO="Description";
+    public static final String COLUMN_THREE="Date";
     private static final int DB_VERSION=1;
 
     private SQLiteDatabase database;
@@ -32,7 +33,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query=String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT);",TABLE_NAME,COLUMN_ONE,COLUMN_TWO);
+        String query=String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT,%s TEXT);",TABLE_NAME,COLUMN_ONE,COLUMN_TWO,COLUMN_THREE);
         db.execSQL(query);
     }
 
@@ -43,12 +44,13 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertNewTask(String item,String desc)
+    public boolean insertNewTask(String item,String desc,String date)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(COLUMN_ONE,item);
         contentValues.put(COLUMN_TWO,desc);
+        contentValues.put(COLUMN_THREE,date);
 
         Log.d("dbhelper","add data"+item+"to"+TABLE_NAME);
 
@@ -83,6 +85,12 @@ public class DbHelper extends SQLiteOpenHelper {
         return todoList;
     }
 
+    public Cursor getListContents()
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor data=db.rawQuery("SELECT * FROM "+TABLE_NAME,null);
+        return data;
+    }
 
 
 }
