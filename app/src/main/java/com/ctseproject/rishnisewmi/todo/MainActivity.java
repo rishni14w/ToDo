@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -50,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 lstItems=(ListView)findViewById(R.id.list_view);
                 lstItems.setAdapter(adapter_task);
             }
+        }
+    }
+
+    public  void itemClicked(View view)
+    {
+        //CheckBox checkbox=(CheckBox)view;
+        CheckedTextView checkbox=(CheckedTextView)view;
+        if(!checkbox.isChecked())
+        {
+            checkbox.setChecked(true);
+        }
+        else
+        {
+            checkbox.setChecked(false);
         }
     }
 
