@@ -11,20 +11,17 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-/**
- * Created by Rishni on 3/21/2018.
- */
+
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME="ToDoDatabase";
+    private static final String DB_NAME="ToDo_Database";
     private static final String TABLE_NAME="Tasks";
     private static final String COLUMN_ONE="Task";
     private static final String COLUMN_TWO="Description";
     public static final String COLUMN_THREE="Date";
     private static final int DB_VERSION=1;
 
-    private SQLiteDatabase database;
 
     public DbHelper(Context context)
     {
@@ -65,25 +62,6 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-
-    public ArrayList<String> getToDoList()
-    {
-        ArrayList<String> todoList=new ArrayList<>();
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor c=db.query(TABLE_NAME,new String[]{COLUMN_ONE},null,null,null,null,null);
-        if(c.moveToLast())
-        {
-            do{
-                int index=c.getColumnIndex(COLUMN_ONE);
-                todoList.add(c.getString(index));
-            }
-            while (c.moveToPrevious());
-
-        }
-        c.close();
-        db.close();
-        return todoList;
-    }
 
     public Cursor getListContents()
     {

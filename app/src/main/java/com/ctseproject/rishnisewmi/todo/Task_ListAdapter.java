@@ -9,26 +9,23 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Rishni on 3/31/2018.
- */
 
 public class Task_ListAdapter extends ArrayAdapter<Task> {
     private LayoutInflater mInflater;
     private ArrayList<Task> tasks;
-    private int mViewResourceId;
+    private int viewResourceId;
 
     public Task_ListAdapter(Context context, int textViewResourceId, ArrayList<Task> tasks)
     {
         super(context,textViewResourceId,tasks);
         this.tasks=tasks;
         mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mViewResourceId=textViewResourceId;
+        viewResourceId=textViewResourceId;
     }
 
     public View getView(int position, View convertView, ViewGroup parents)
     {
-        convertView=mInflater.inflate(mViewResourceId,null);
+        convertView=mInflater.inflate(viewResourceId,null);
 
         Task task=tasks.get(position);
 

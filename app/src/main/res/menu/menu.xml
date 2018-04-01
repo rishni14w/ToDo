@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--check icon-->
+
+    <item
+        android:id="@+id/cancel"
+        android:title="@string/cancel"
+        app:showAsAction="always"
+        android:iconTint="@color/colorWhite"
+        android:orderInCategory="1"/>
     <item
         android:id="@+id/save"
-        android:icon="@drawable/ic_action_name"
-        android:title="save"
+        android:title="@string/save"
         app:showAsAction="always"
-        android:iconTint="@color/colorWhite"/>
+        android:iconTint="@color/colorWhite"
+        android:orderInCategory="2"/>
+
 </menu>

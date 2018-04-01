@@ -5,9 +5,17 @@
 
     <!--Add Task-->
     <string name="task">Task</string>
-    <string name="date">Date</string>
+    <string name="date">Due Date</string>
     <string name="description">Description</string>
     <string name="taskHint">Type your task here</string>
     <string name="dateHint">Pick the date here</string>
     <string name="descriptionHint">Type notes here</string>
+
+    <!--listview-->
+    <string name="task_title_listView">Task title</string>
+    <string name="due_date_listView">Due date</string>
+
+    <!--menu-->
+    <string name="save">SAVE</string>
+    <string name="cancel">CANCEL</string>
 </resources>

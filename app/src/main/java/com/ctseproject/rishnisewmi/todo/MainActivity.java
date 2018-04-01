@@ -2,12 +2,13 @@ package com.ctseproject.rishnisewmi.todo;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     Task task;
 
     FloatingActionButton fab;
+    CheckedTextView checkedTextView;
+    Bundle b;
+    private final static String TAG="Lifecycle_watch";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         lstItems=(ListView)findViewById(R.id.list_view);
 
 
-        //showItemList();
+        //showItemList
         taskList=new ArrayList<Task>();
         Cursor data=dbHelper.getListContents();
         int numRow=data.getCount();
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     task=new Task(data.getString(1),data.getString(3));
                     taskList.add(task);
 
-                    Task_ListAdapter adapter_task=new Task_ListAdapter(this,R.layout.row,taskList);
+                    Task_ListAdapter adapter_task=new Task_ListAdapter(this,R.layout.listview_row_layout,taskList);
                     lstItems=(ListView)findViewById(R.id.list_view);
                     lstItems.setAdapter(adapter_task);
                 }
@@ -71,45 +75,76 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "Lifecycle Event: onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "Lifecycle Event: onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "Lifecycle Event: onPause");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "Lifecycle Event: onRestart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "Lifecycle Event: onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "Lifecycle Event: onDestroy");
+    }
+
+    /**@Override
+    protected void onSaveInstanceState(Bundle bundle)
+    {
+        super.onSaveInstanceState(bundle);
+        b.putBoolean("checkbox",checkedTextView.isChecked());
+    }**/
 
     public  void itemClicked(View view)
     {
-        //CheckBox checkbox=(CheckBox)view;
-        CheckedTextView checkbox=(CheckedTextView)view;
-        if(!checkbox.isChecked())
+        CheckedTextView checkedTextView=(CheckedTextView)view;
+        if(!checkedTextView.isChecked())
         {
-            checkbox.setChecked(true);
+            checkedTextView.setChecked(true);
+
+            /**switch (view.getId())
+            {
+                case R.id.checkbox:
+                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("checkbox",true).commit();
+                    /**SharedPreferences Preference=getSharedPreferences("Pref", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=Preference.edit();
+                    editor.putBoolean("checkbox",true);
+                    editor.commit(); **/
+                   /** break;
+            }**/
         }
         else
         {
-            checkbox.setChecked(false);
+            checkedTextView.setChecked(false);
         }
     }
 
-    /**public void onAddClicked(View view)
-    {
-        if(view.getId()==R.id.add_task)
-        {
-            Intent i=new Intent(this,NewTaskActivity.class);
-            startActivity(i);
-        }
-    }**/
 
-
-    private void showItemList()
-    {
-        ArrayList<String> itemList=dbHelper.getToDoList();
-        if(adapter==null)
-        {
-            adapter=new ArrayAdapter<String>(this,R.layout.row,R.id.task_title,itemList);
-            lstItems.setAdapter(adapter);
-        }
-        else
-        {
-            adapter.clear();
-            adapter.addAll(itemList);
-            adapter.notifyDataSetChanged();
-        }
-    }
 }
